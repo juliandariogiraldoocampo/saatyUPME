@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from PIL import Image
+import matplotlib.pyplot as plt
 
 # Función para calcular los pesos a partir de la matriz de comparación
 def calcular_pesos(matriz):
@@ -72,6 +73,29 @@ def app():
                 st.subheader("Pesos calculados:")
                 pesos_porcentaje = pd.Series(pesos * 100, index=criterios)
                 st.dataframe(pesos_porcentaje.to_frame(name="Peso (%)"))
+            
+                # Crear un gráfico de torta para los pesos
+                # Aquí ajustamos el tamaño de la figura a un 75% del tamaño original
+                fig, ax = plt.subplots(figsize=(6,4))
+                ax.pie(pesos, labels=criterios, autopct='%1.1f%%', startangle=90)
+                ax.axis('equal')  # Igual aspect ratio asegura que se dibuje el pie como un círculo.
+                
+                # Mostrar el gráfico de torta
+                st.pyplot(fig)
+
+                st.markdown("""
+                    <style>
+                    .impresion {
+                        font-size: 10pt;
+                        color: gray;
+                        text-align: center;
+                        font-style: italic;
+                    }
+                    </style>
+                    <p class="impresion">Para garantizar la reproducibilidad de este modelo de ponderación, recomendamos obtener una copia de este informe utilizando la función de impresión del navegador.<br>
+                        Presione 'CTRL + P' en Windows o 'CMD + P' en Mac para abrir la ventana de impresión.                
+                    </p>
+                    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     app()
@@ -83,7 +107,7 @@ if __name__ == "__main__":
         .credits {
             font-size: 10pt;
             color: gray;
-            align: right;
+            text-align: right;
         }
         </style>
         <p class="credits">Developed by: Julián Darío Giraldo Ocampo | ingenieria@juliangiraldo.co</p>
