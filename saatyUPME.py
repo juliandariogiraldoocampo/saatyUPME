@@ -4,34 +4,33 @@ import pandas as pd
 from PIL import Image
 
 # Función para calcular los pesos a partir de la matriz de comparación
-def calcular_pesos(matriz_a):
-    cant = matriz_a.shape[0]
-    productos = np.prod(matriz_a, axis=1)
+def calcular_pesos(matriz):
+    cant = matriz.shape[0]
+    productos = np.prod(matriz, axis=1)
     raices = productos ** (1 / cant)
     pesos = raices / raices.sum()
     return pesos
 
 # Función principal de la app de Streamlit
 def app():
-    #    Cargar imágenes
+    #  Imágenes
     logoUPME = Image.open('img/UPME.png')
     logoUdeA = Image.open('img/UdeA.png')
 
-    # Columnas para colocar imágenes una al lado de la otra
+    # Layout imágenes
     col1, col2 = st.columns([1, 1])
     with col1:
         st.image(logoUPME)
     with col2:
         st.image(logoUdeA)
     
-    # Usar HTML para el título y subtítulos con diferentes tamaños de fuente
+    # HTML para título y subtítulos
     st.markdown("""
-    <h1 style='text-align: center; font-size: 36px;'>Modelo de Conflictividad Socio-Ambiental<br>
-    Ponderación de Variables</h1>
-    <h3 style='text-align: center; font-size: 30px;'>Analytic Hierarchy Process - AHP</h3>
+    <h1 style='text-align: center; font-size: 36px;'>Modelo de Conflictividad Socio-Ambiental</h1>
+    <h3 style='text-align: center; font-size: 30px;'>Ponderación de Variables <br> Analytic Hierarchy Process - AHP</h3>
     """, unsafe_allow_html=True)
 
-    # Solicitar número de criterios
+    # Captura número de criterios
     cant = st.number_input("¿CUÁNTOS CRITERIOS DESEA EVALUAR?", min_value=2, max_value=15, step=1)
 
     # Si se ha establecido un número de criterios, solicitar sus nombres
@@ -40,7 +39,7 @@ def app():
     
     if all(criterios):
         # Crear una matriz de comparación
-        matriz_a = np.ones((cant, cant))
+        matriz = np.ones((cant, cant))
         
         with st.form("matriz_comparacion"):
             st.subheader("Matriz de Comparación")
@@ -61,14 +60,14 @@ def app():
                                           key=f"select_{i}_{j}")
                     # Encontrar el valor numérico correspondiente a la opción de texto
                     valor = next(val for text, val in opciones if text == opcion)
-                    matriz_a[i, j] = valor
-                    matriz_a[j, i] = 1 / valor
+                    matriz[i, j] = valor
+                    matriz[j, i] = 1 / valor
             
             # Botón de envío
             submitted = st.form_submit_button("Calcular pesos")
             if submitted:
                 # Calcular pesos
-                pesos = calcular_pesos(matriz_a)
+                pesos = calcular_pesos(matriz)
                 # Mostrar pesos en formato de porcentaje
                 st.subheader("Pesos calculados:")
                 pesos_porcentaje = pd.Series(pesos * 100, index=criterios)
@@ -84,6 +83,7 @@ if __name__ == "__main__":
         .credits {
             font-size: 10pt;
             color: gray;
+            align: right;
         }
         </style>
         <p class="credits">Developed by: Julián Darío Giraldo Ocampo | ingenieria@juliangiraldo.co</p>
