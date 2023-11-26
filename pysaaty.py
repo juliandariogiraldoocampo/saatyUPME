@@ -14,7 +14,7 @@ def calcular_pesos(matriz_a):
 def app():
         # Usar HTML para el título y subtítulos con diferentes tamaños de fuente
     st.markdown("""
-    <h1 style='text-align: center; font-size: 36px;'>Modelo de Conflictividad Socio-Ambiental</h1>
+    <h1 style='text-align: center; font-size: 36px;'>Modelo de Conflictividad Socio-Ambiental | UPME</h1>
     <h3 style='text-align: center; font-size: 30px;'>Ponderación de Variables<br>
                 Analytic Hierarchy Process - AHP<br>
                 UNIVERSIDAD DE ANTIOQUIA</h3>
