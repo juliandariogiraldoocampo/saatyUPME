@@ -21,7 +21,7 @@ def app():
     """, unsafe_allow_html=True)
 
     # Solicitar número de criterios
-    cant = st.number_input("¿CUÁNTOS CRITERIOS DESEA EVALUAR?", min_value=2, max_value=10, step=1)
+    cant = st.number_input("¿CUÁNTOS CRITERIOS DESEA EVALUAR?", min_value=2, max_value=15, step=1)
 
     # Si se ha establecido un número de criterios, solicitar sus nombres
     if cant > 0:
