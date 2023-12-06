@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 import matplotlib.pyplot as plt
+import gspread
+import pygsheets
 
 # Función para calcular los pesos a partir de la matriz de comparación
 def calcular_pesos(matriz):
@@ -30,6 +32,14 @@ def app():
     <h1 style='text-align: center; font-size: 36px;'>Modelo de Conflictividad Socio-Ambiental</h1>
     <h3 style='text-align: center; font-size: 30px;'>Ponderación de Variables <br> Analytic Hierarchy Process - AHP</h3>
     """, unsafe_allow_html=True)
+
+    # Captura del Nombre del Usuario
+    nombreUsuario = st.text_input("Ingrese su Nombre, Perfil o Correo Electrónico")
+    st.session_state['nombreUsuario'] = nombreUsuario
+
+    # Captura del Nombre del Fenómeno o Aspecto sobre el quiere ponderar las variables
+    nombreFenomeno = st.text_input("Nombre del Fenómeno o Aspecto, Objeto de Análisis:")
+    st.session_state['nombreFenomeno'] = nombreFenomeno
 
     # Captura número de criterios
     cant = st.number_input("¿CUÁNTOS CRITERIOS DESEA EVALUAR?", min_value=2, max_value=15, step=1)
@@ -101,7 +111,7 @@ if __name__ == "__main__":
     app()
 
 
-       # Agregar los créditos e la parte inferior
+       # Creditos del Pie de página
     st.markdown("""
         <style>
         .credits {
