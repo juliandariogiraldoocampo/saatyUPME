@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import gspread
 import pygsheets
 
+
 # Función para calcular los pesos a partir de la matriz de comparación
 def calcular_pesos(matriz):
     cant = matriz.shape[0]
@@ -106,6 +107,30 @@ def app():
                         Presione 'CTRL + P' en Windows o 'CMD + P' en Mac para abrir la ventana de impresión.                
                     </p>
                     """, unsafe_allow_html=True)
+            
+        if submitted:
+            # ... (tu código para mostrar los resultados)
+
+            # Botón para guardar los datos en Google Sheets
+            save_button = st.button("Guardar Resultados")
+
+            if save_button:
+                # Autenticación con Google Sheets usando Streamlit secrets
+                gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
+                
+                # Acceder a la hoja de cálculo y a la primera hoja
+                sh = gc.open("Resultados_AHP_UPME")
+                worksheet = sh.sheet1
+
+                # Preparar los datos para insertar
+                datos = [st.session_state['nombreUsuario'], st.session_state['nombreFenomeno']] + \
+                        [item for pair in zip(st.session_state['criterios'], st.session_state['pesos']) for item in pair]
+
+                # Insertar la fila de datos en la hoja
+                worksheet.append_row(datos)
+
+                st.success("Datos guardados con éxito en Google Sheets.")
+
 
 if __name__ == "__main__":
     app()
