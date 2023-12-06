@@ -119,8 +119,9 @@ def app():
                 gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
                 
                 # Acceder a la hoja de cálculo y a la primera hoja
-                sh = gc.open("Resultados_AHP_UPME")
+                sh = gc.open("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
                 worksheet = sh.sheet1
+                print(worksheet.title)
 
                 # Preparar los datos para insertar
                 datos = [st.session_state['nombreUsuario'], st.session_state['nombreFenomeno']] + \
