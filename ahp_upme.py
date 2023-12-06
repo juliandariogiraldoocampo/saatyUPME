@@ -112,16 +112,17 @@ def app():
             # ... (tu código para mostrar los resultados)
 
             # Botón para guardar los datos en Google Sheets
-            save_button = st.button("Guardar Resultados")
+            btnGuardar = st.button("Guardar Resultados")
 
-            if save_button:
+            if btnGuardar:
+                st.success("Iniciemos")
                 # Autenticación con Google Sheets usando Streamlit secrets
                 gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
                 
                 # Acceder a la hoja de cálculo y a la primera hoja
                 sh = gc.open("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
                 worksheet = sh.sheet1
-                print(worksheet.title)
+                st.success(worksheet)
 
                 # Preparar los datos para insertar
                 datos = [st.session_state['nombreUsuario'], st.session_state['nombreFenomeno']] + \
