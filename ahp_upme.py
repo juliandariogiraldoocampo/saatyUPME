@@ -84,7 +84,9 @@ def app():
                 st.subheader("Pesos calculados:")
                 st.session_state['pesos_porcentaje'] = pd.Series(pesos * 100, index=criterios)
                 st.dataframe(st.session_state['pesos_porcentaje'].to_frame(name="Peso (%)"))
-
+                
+                # Después de calcular y mostrar los pesos, establece una variable de estado para indicar que los resultados están listos
+                st.session_state['resultados_listos'] = True
             
                 # Crear un gráfico de torta para los pesos
                 # Aquí ajustamos el tamaño de la figura a un 75% del tamaño original
@@ -111,31 +113,33 @@ def app():
             
 
 
-        # Botón para guardar los datos en Google Sheets
-        btnGuardar = st.button("Guardar Resultados")
-        if btnGuardar and 'pesos_porcentaje' in st.session_state:
-            try:
-                # Autenticación con Google Sheets usando Streamlit secrets
-                gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
+        # Aquí verificamos si 'resultados_listos' existe en st.session_state antes de mostrar el botón
+        if 'resultados_listos' in st.session_state and st.session_state['resultados_listos']:
+            # Botón para guardar los datos en Google Sheets
+            btnGuardar = st.button("Guardar Resultados")
+            if btnGuardar and 'pesos_porcentaje' in st.session_state:
+                try:
+                    # Autenticación con Google Sheets usando Streamlit secrets
+                    gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
 
-                # Acceder a la hoja de cálculo por su ID
-                sh = gc.open_by_key("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
-                worksheet = sh.get_worksheet(0)  # Accede a la primera hoja por índice
+                    # Acceder a la hoja de cálculo por su ID
+                    sh = gc.open_by_key("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
+                    worksheet = sh.get_worksheet(0)  # Accede a la primera hoja por índice
 
-                # Preparar los datos para insertar
-                datos = [st.session_state['nombreUsuario'], st.session_state['nombreFenomeno']] + \
-                    [item for pair in zip(criterios, st.session_state['pesos_porcentaje']) for item in pair]
+                    # Preparar los datos para insertar
+                    datos = [st.session_state['nombreUsuario'], st.session_state['nombreFenomeno']] + \
+                        [item for pair in zip(criterios, st.session_state['pesos_porcentaje']) for item in pair]
 
-                # Insertar la fila de datos en la hoja
-                response = worksheet.append_row(datos)
-                st.success("Datos guardados con éxito")
-                #st.success("Datos guardados con éxito. Respuesta: {}".format(response))
-            except gspread.exceptions.APIError as e:
-                st.error("Error de la API de Almacenamiento")
-                #st.error("Error de la API de Google Sheets: {}".format(e))
-            except Exception as e:
-                st.error("Error al guardar datos")
-                #st.error("Error al guardar datos: {}".format(e))
+                    # Insertar la fila de datos en la hoja
+                    response = worksheet.append_row(datos)
+                    st.success("Datos guardados con éxito")
+                    #st.success("Datos guardados con éxito. Respuesta: {}".format(response))
+                except gspread.exceptions.APIError as e:
+                    st.error("Error de la API de Almacenamiento")
+                    #st.error("Error de la API de Google Sheets: {}".format(e))
+                except Exception as e:
+                    st.error("Error al guardar datos")
+                    #st.error("Error al guardar datos: {}".format(e))
 
 
 
