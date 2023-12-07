@@ -112,26 +112,28 @@ def app():
 
         # Botón para guardar los datos en Google Sheets
         btnGuardar = st.button("Guardar Resultados")
-
         if btnGuardar:
-            st.success("Iniciando...")
-            # Autenticación con Google Sheets usando Streamlit secrets
-            gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
-            
-            # Acceder a la hoja de cálculo y a la primera hoja
+            try:
+                # Autenticación con Google Sheets usando Streamlit secrets
+                gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
 
-            sh = gc.open_by_key("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
-            worksheet = sh.sheet1
-            st.write("Hoja actual:", worksheet.title)
+                # Acceder a la hoja de cálculo por su ID
+                sh = gc.open_by_key("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
+                worksheet = sh.sheet1
 
-            # Preparar los datos para insertar
-            datos = [st.session_state['nombreUsuario'], st.session_state['nombreFenomeno']] + \
-                    [item for pair in zip(st.session_state['criterios'], st.session_state['pesos']) for item in pair]
+                # Verificar el nombre de la hoja actual
+                st.write("Hoja actual:", worksheet.title)
 
-            # Insertar la fila de datos en la hoja
-            worksheet.append_row(datos)
+                # Preparar los datos para insertar
+                datos = [st.session_state['nombreUsuario'], st.session_state['nombreFenomeno']] + \
+                        [item for pair in zip(criterios, pesos_porcentaje) for item in pair]
 
-            st.success("Datos guardados con éxito")
+                # Insertar la fila de datos en la hoja
+                worksheet.append_row(datos)
+                st.success("Datos guardados con éxito en Google Sheets.")
+            except Exception as e:
+                st.error("Error al guardar datos en Google Sheets: {}".format(e))
+
 
 
 if __name__ == "__main__":
