@@ -108,30 +108,30 @@ def app():
                     </p>
                     """, unsafe_allow_html=True)
             
-        if submitted:
-            # ... (tu código para mostrar los resultados)
 
-            # Botón para guardar los datos en Google Sheets
-            btnGuardar = st.button("Guardar Resultados")
 
-            if btnGuardar:
-                st.success("Iniciemos")
-                # Autenticación con Google Sheets usando Streamlit secrets
-                gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
-                
-                # Acceder a la hoja de cálculo y a la primera hoja
-                sh = gc.open("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
-                worksheet = sh.sheet1
-                st.success(worksheet)
+        # Botón para guardar los datos en Google Sheets
+        btnGuardar = st.button("Guardar Resultados")
 
-                # Preparar los datos para insertar
-                datos = [st.session_state['nombreUsuario'], st.session_state['nombreFenomeno']] + \
-                        [item for pair in zip(st.session_state['criterios'], st.session_state['pesos']) for item in pair]
+        if btnGuardar:
+            st.success("Iniciando...")
+            # Autenticación con Google Sheets usando Streamlit secrets
+            gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
+            
+            # Acceder a la hoja de cálculo y a la primera hoja
 
-                # Insertar la fila de datos en la hoja
-                worksheet.append_row(datos)
+            sh = gc.open("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
+            worksheet = sh.sheet1
+            st.write("Hoja actual:", worksheet.title)
 
-                st.success("Datos guardados con éxito en Google Sheets.")
+            # Preparar los datos para insertar
+            datos = [st.session_state['nombreUsuario'], st.session_state['nombreFenomeno']] + \
+                    [item for pair in zip(st.session_state['criterios'], st.session_state['pesos']) for item in pair]
+
+            # Insertar la fila de datos en la hoja
+            worksheet.append_row(datos)
+
+            st.success("Datos guardados con éxito")
 
 
 if __name__ == "__main__":
