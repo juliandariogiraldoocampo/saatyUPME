@@ -120,7 +120,7 @@ def app():
             
             # Acceder a la hoja de cálculo y a la primera hoja
 
-            sh = gc.open("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
+            sh = gc.open_by_key("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
             worksheet = sh.sheet1
             st.write("Hoja actual:", worksheet.title)
 
