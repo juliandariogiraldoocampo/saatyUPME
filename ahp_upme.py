@@ -128,11 +128,14 @@ def app():
 
                 # Insertar la fila de datos en la hoja
                 response = worksheet.append_row(datos)
-                st.success("Datos guardados con éxito. Respuesta: {}".format(response))
+                st.success("Datos guardados con éxito")
+                #st.success("Datos guardados con éxito. Respuesta: {}".format(response))
             except gspread.exceptions.APIError as e:
-                st.error("Error de la API de Google Sheets: {}".format(e))
+                st.error("Error de la API de Almacenamiento")
+                #st.error("Error de la API de Google Sheets: {}".format(e))
             except Exception as e:
-                st.error("Error al guardar datos: {}".format(e))
+                st.error("Error al guardar datos")
+                #st.error("Error al guardar datos: {}".format(e))
 
 
 
