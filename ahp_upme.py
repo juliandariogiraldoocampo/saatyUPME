@@ -82,8 +82,9 @@ def app():
                 pesos = calcular_pesos(matriz)
                 # Mostrar pesos en formato de porcentaje
                 st.subheader("Pesos calculados:")
-                pesos_porcentaje = pd.Series(pesos * 100, index=criterios)
-                st.dataframe(pesos_porcentaje.to_frame(name="Peso (%)"))
+                st.session_state['pesos_porcentaje'] = pd.Series(pesos * 100, index=criterios)
+                st.dataframe(st.session_state['pesos_porcentaje'].to_frame(name="Peso (%)"))
+
             
                 # Crear un gráfico de torta para los pesos
                 # Aquí ajustamos el tamaño de la figura a un 75% del tamaño original
@@ -112,7 +113,7 @@ def app():
 
         # Botón para guardar los datos en Google Sheets
         btnGuardar = st.button("Guardar Resultados")
-        if btnGuardar:
+        if btnGuardar and 'pesos_porcentaje' in st.session_state:
             try:
                 # Autenticación con Google Sheets usando Streamlit secrets
                 gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
@@ -123,15 +124,15 @@ def app():
 
                 # Preparar los datos para insertar
                 datos = [st.session_state['nombreUsuario'], st.session_state['nombreFenomeno']] + \
-                        [item for pair in zip(criterios, pesos_porcentaje) for item in pair]
+                    [item for pair in zip(criterios, st.session_state['pesos_porcentaje']) for item in pair]
 
                 # Insertar la fila de datos en la hoja
                 response = worksheet.append_row(datos)
-                st.success("Datos guardados con éxito en Google Sheets. Respuesta: {}".format(response))
+                st.success("Datos guardados con éxito. Respuesta: {}".format(response))
             except gspread.exceptions.APIError as e:
                 st.error("Error de la API de Google Sheets: {}".format(e))
             except Exception as e:
-                st.error("Error al guardar datos en Google Sheets: {}".format(e))
+                st.error("Error al guardar datos: {}".format(e))
 
 
 
