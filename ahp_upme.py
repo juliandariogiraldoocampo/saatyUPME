@@ -118,19 +118,18 @@ def app():
                 gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
 
                 # Acceder a la hoja de cálculo por su ID
-                sh = gc.open("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
-                worksheet = sh.sheet1
-
-                # Verificar el nombre de la hoja actual
-                st.write("Hoja actual:", worksheet.title)
+                sh = gc.open_by_key("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
+                worksheet = sh.get_worksheet(0)  # Accede a la primera hoja por índice
 
                 # Preparar los datos para insertar
                 datos = [st.session_state['nombreUsuario'], st.session_state['nombreFenomeno']] + \
                         [item for pair in zip(criterios, pesos_porcentaje) for item in pair]
 
                 # Insertar la fila de datos en la hoja
-                worksheet.append_row(datos)
-                st.success("Datos guardados con éxito en Google Sheets.")
+                response = worksheet.append_row(datos)
+                st.success("Datos guardados con éxito en Google Sheets. Respuesta: {}".format(response))
+            except gspread.exceptions.APIError as e:
+                st.error("Error de la API de Google Sheets: {}".format(e))
             except Exception as e:
                 st.error("Error al guardar datos en Google Sheets: {}".format(e))
 
