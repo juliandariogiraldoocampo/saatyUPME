@@ -118,7 +118,7 @@ def app():
                 gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
 
                 # Acceder a la hoja de cálculo por su ID
-                sh = gc.open_by_key("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
+                sh = gc.open("1zNXnSOc2qWxDpOo8kpEGsF2zDNC5yyZF80FnfzbQzyk")
                 worksheet = sh.sheet1
 
                 # Verificar el nombre de la hoja actual
