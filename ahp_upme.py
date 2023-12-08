@@ -43,7 +43,7 @@ def app():
     st.session_state['nombreFenomeno'] = nombreFenomeno
 
     # Captura número de criterios
-    cant = st.number_input("¿CUÁNTOS CRITERIOS DESEA EVALUAR?", min_value=2, max_value=15, step=1)
+    cant = st.number_input("¿CUÁNTAS VARIABLES/CRITERIOS DESEA EVALUAR?", min_value=2, max_value=15, step=1)
 
     # Si se ha establecido un número de criterios, solicitar sus nombres
     if cant > 0:
