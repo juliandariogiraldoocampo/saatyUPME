@@ -35,19 +35,19 @@ def app():
     """, unsafe_allow_html=True)
 
     # Captura del Nombre del Usuario
-    nombreUsuario = st.text_input("Ingrese su Nombre, Perfil o Correo Electrónico")
+    nombreUsuario = st.text_input("INGRESE SU NOMBRE Y/O PERFIL")
     st.session_state['nombreUsuario'] = nombreUsuario
 
     # Captura del Nombre del Fenómeno o Aspecto sobre el quiere ponderar las variables
-    nombreFenomeno = st.text_input("Nombre del Fenómeno o Aspecto, Objeto de Análisis:")
+    nombreFenomeno = st.text_input("NOMBRE DEL FENÓMENO O ASPECTO, OBJETO DE ANÁLISIS")
     st.session_state['nombreFenomeno'] = nombreFenomeno
 
     # Captura número de criterios
-    cant = st.number_input("¿CUÁNTAS VARIABLES/CRITERIOS DESEA EVALUAR?", min_value=2, max_value=15, step=1)
+    cant = st.number_input("¿CUÁNTAS VARIABLES DESEA EVALUAR?", min_value=2, max_value=15, step=1)
 
     # Si se ha establecido un número de criterios, solicitar sus nombres
     if cant > 0:
-        criterios = [st.text_input(f"Nombre del criterio {i+1}:", key=f"criterio_{i}") for i in range(cant)]
+        criterios = [st.text_input(f"Nombre de la variable {i+1}:", key=f"criterio_{i}") for i in range(cant)]
     
     if all(criterios):
         # Crear una matriz de comparación
@@ -66,7 +66,7 @@ def app():
             for i in range(cant):
                 for j in range(i+1, cant):
                     # Usar un selectbox con texto en lugar de números
-                    opcion = st.selectbox(f"Cómo definirías la comparación entre {criterios[i]} y {criterios[j]}:", 
+                    opcion = st.selectbox(f"Cómo definirías {criterios[i]} con respecto a {criterios[j]}:", 
                                           options=[o[0] for o in opciones], 
                                           format_func=lambda x: x,
                                           key=f"select_{i}_{j}")
