@@ -66,7 +66,7 @@ def app():
             for i in range(cant):
                 for j in range(i+1, cant):
                     # Usar un selectbox con texto en lugar de números
-                    opcion = st.selectbox(f"¿CÓMO DEFINIRÍAS   ({criterios[i]})   CON RESPECTO A   ({criterios[j]})?", 
+                    opcion = st.selectbox(f"¿CÓMO DEFINIRÍAS   ( {criterios[i]} )   CON RESPECTO A   ( {criterios[j]} )?", 
                                           options=[o[0] for o in opciones], 
                                           format_func=lambda x: x,
                                           key=f"select_{i}_{j}")
