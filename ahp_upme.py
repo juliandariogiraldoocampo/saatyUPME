@@ -30,7 +30,7 @@ def app():
     
     # HTML para título y subtítulos
     st.markdown("""
-    <h1 style='text-align: center; font-size: 36px;'>Modelo de Conflictividad Socio-Ambiental</h1>
+    <h1 style='text-align: center; font-size: 36px;'>Modelo de Criticidad Socio-Ambiental</h1>
     <h3 style='text-align: center; font-size: 30px;'>Ponderación de Variables <br> Analytic Hierarchy Process - AHP</h3>
     """, unsafe_allow_html=True)
 
