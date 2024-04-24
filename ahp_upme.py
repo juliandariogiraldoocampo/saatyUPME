@@ -156,5 +156,8 @@ if __name__ == "__main__":
             text-align: right;
         }
         </style>
-        <p class="credits">Developed by: Julián Darío Giraldo Ocampo | ingenieria@juliangiraldo.co</p>
+        <p class="credits">Developed by:<br>
+        Julián Darío Giraldo Ocampo | juliangiraldo@elpoli.edu.co<br>
+        John Fernando Escobar Martínez | john.escobar@udea.edu.co <br>
+        Oscar Estevan Cossio Madrid | oscarcossio@elpoli.edu.co</p>
         """, unsafe_allow_html=True)
